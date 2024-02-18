@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <title>Bingo Game</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/nav.css">
+</head>
+
+<body>
+  <nav id="navbar">
+    <div class="title"> <a href='/'>BINGO BUZZ</a></div>
+    <input type="checkbox" id="nav-toggle">
+    <ul class="links">
+      <li><a href='index.html'>Numbers</a></li>
+      <li><a href='celebs.html'>Celebrities</a></li>
+      <li><a href='movies.html'>Movies</a></li>
+    </ul>
+    <label for="nav-toggle" class="icon-burger">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </label>
+  </nav>
+
+  <div id="square"></div>
+
+  <div class="bingo-card" id="bingoCard">
+    <div class="bingo-item" onclick="strike(this)" id="1"></div>
+    <div class="bingo-item" onclick="strike(this)" id="2"></div>
+    <div class="bingo-item" onclick="strike(this)" id="3"></div>
+    <div class="bingo-item" onclick="strike(this)" id="4"></div>
+    <div class="bingo-item" onclick="strike(this)" id="5"></div>
+    <div class="bingo-item" onclick="strike(this)" id="6"></div>
+    <div class="bingo-item" onclick="strike(this)" id="7"></div>
+    <div class="bingo-item" onclick="strike(this)" id="8"></div>
+    <div class="bingo-item" onclick="strike(this)" id="9"></div>
+    <div class="bingo-item" onclick="strike(this)" id="10"></div>
+    <div class="bingo-item" onclick="strike(this)" id="11"></div>
+    <div class="bingo-item" onclick="strike(this)" id="12"></div>
+    <div class="bingo-item" onclick="strike(this)" id="13"></div>
+    <div class="bingo-item" onclick="strike(this)" id="14"></div>
+    <div class="bingo-item" onclick="strike(this)" id="15"></div>
+    <div class="bingo-item" onclick="strike(this)" id="16"></div>
+  </div>
+
+  <div id="button-container">
+    <button class="button" onclick="generateNumbers()">Generate Celebs</button>
+    <button class="button" id="end" onclick="end()">Bingo!</button>
+  </div>
+
+  <script>
+    // strike bingo item when clicked
+    function strike(element) {
+      element.classList.toggle("strikethrough");
+    }
+
+    let intervalId;
+    const randomNumberDiv = document.getElementById('square');
+
+    // randomly generate numbers 1-16 onto the bingo card
+    // begin displaying numbers 
+    function generateNumbers() {
+      randomNumberDiv.classList.remove("win");
+      const bingoItems = document.querySelectorAll('.bingo-item');
+      const numbers = ["Timothee Chalamet", "Jennifer Lawrence", "Jennifer Aniston", "Scarlett Johansson", "Brad Pitt", "Tom Holland", "Heath Ledger", "Zendaya Coleman", "Jacob Elordi", "Harry Styles", "Travis Scott", "Emma Stone", "Ryan Gosling", "Blake Lively", "Margot Robbie", "Hugh Jackman"];
+      let randomNumber;
+
+      // Shuffle the array of numbers
+      for (let i = numbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = numbers[i];
+        numbers[i] = numbers[j];
+        numbers[j] = temp;
+      }
+
+      // Assign numbers to bingo items
+      for (let i = 0; i < bingoItems.length; i++) {
+        bingoItems[i].textContent = numbers[i];
+      }
+
+      // Numbers already shown
+      const numbersShown = [];
+
+      // Generate a random number between 1-16
+      function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // Display a random number 
+      function showRandomNumber() {
+        // if all numbers are displayed, game is over.
+        if (numbersShown.length === 16) {
+          clearInterval(intervalId);
+          randomNumberDiv.textContent = "Game Over";
+          return;
+        }
+
+        // Generate a new random number
+        do {
+          randomNumber = getRandomNumber(1, 16);
+        } while (numbersShown.includes(randomNumber));
+
+        // Add the new number to the array of shown numbers
+        numbersShown.push(randomNumber);
+
+        // Display the number
+        randomNumberDiv.textContent = randomNumber;
+      }
+
+      // Display new number every 2.5 seconds
+      intervalId = setInterval(showRandomNumber, 2500);
+    }
+
+    // When bingo is achieved, game is over
+    function end() {
+      clearInterval(intervalId);
+      randomNumberDiv.textContent = "BINGO!";
+      randomNumberDiv.classList.add("win");
+      return;
+    }
+  </script>
+</body>
+
+</html>

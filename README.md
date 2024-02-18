@@ -1,0 +1,1 @@
+https://bingobuzz.netlify.app/

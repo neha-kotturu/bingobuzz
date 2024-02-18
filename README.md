@@ -1,1 +1,1 @@
-https://bingobuzz.netlify.app/
+https://neha-kotturu.github.io/bingobuzz
